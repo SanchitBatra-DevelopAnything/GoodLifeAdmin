@@ -18,7 +18,7 @@ body {
     align-items: center;
     height: 60px;
     padding: 0 20px;
-    background-color: black;
+    background-color: #C72A2D;
   }
   
   .navbar-icon {
@@ -54,7 +54,7 @@ body {
   }
   
   .navbar-menu ul li a:hover {
-    color: yellow;
+    color: var(--color-primary-hover);
   }
   
   .content {
