@@ -31,9 +31,9 @@
               "src/assets"
             ],
             "styles": [
-              "../kidysAdmin/node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "../kidysAdmin/node_modules/primeng/resources/themes/lara-light-blue/theme.css",
-              "../kidysAdmin/node_modules/primeng/resources/primeng.min.css",
+              "../GoodlifeAdmin/node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "../GoodlifeAdmin/node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "../GoodlifeAdmin/node_modules/primeng/resources/primeng.min.css",
               "src/styles.scss"
             ],
             "scripts": [

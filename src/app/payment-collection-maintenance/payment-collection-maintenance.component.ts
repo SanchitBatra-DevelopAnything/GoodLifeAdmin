@@ -12,11 +12,26 @@ export class PaymentCollectionMaintenanceComponent implements OnInit {
     @Input()
     showButton!:boolean;
 
+    isCurrentMonthJuly : boolean = new Date().getMonth()+1==7;
+
+
     constructor(private apiService:ApiService , private utilityService:UtilityService){}
 
     ngOnInit()
     {
+      
+    }
 
+    getSrc()
+    {
+      if(this.isCurrentMonthJuly)
+      {
+        return "../../assets/julyQR-kidys.jpeg"
+      }
+      else
+      {
+        return "../../assets/backup.jpeg"
+      }
     }
 
     skipMaintenance()
