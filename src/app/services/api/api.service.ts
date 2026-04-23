@@ -269,4 +269,16 @@ export class ApiService {
   {
     return this.http.put(this.dbUrl+"/activeDistributorOrders/"+orderPlace+"/"+orderedBy+"/"+orderKey+"/items/"+index+".json" , itemToBeAdded);
   }
+
+  public onboardCategoryAsParent(formValue:any) : Observable<any>
+  {
+    return this.http.post(this.dbUrl+"Categories.json" , formValue);
+  }
+
+  public onboardCategoryForViewing(formValue:any , parentKey:any) : Observable<any>
+  {
+    return this.http.put(this.dbUrl+"onlyCategories/"+parentKey+".json" , formValue);
+  }
+
+
 }

@@ -11,6 +11,7 @@ export class UtilityService {
   itemEditted:Subject<string>;
   areaAdded:Subject<string>;
   skippedMaintenance:Subject<boolean>;
+  categoryAdded:Subject<boolean>;
 
   itemAddedInExistingOrder:Subject<boolean>;
   
@@ -22,5 +23,6 @@ export class UtilityService {
     this.areaAdded = new Subject<string>();
     this.skippedMaintenance = new Subject<boolean>();
     this.itemAddedInExistingOrder = new Subject<boolean>();
+    this.categoryAdded = new Subject<boolean>();
   }
 }

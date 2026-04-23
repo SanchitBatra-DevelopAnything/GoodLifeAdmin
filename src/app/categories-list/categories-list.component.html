@@ -5,14 +5,14 @@
     <div class="col">
         <div class="container">
             <h3 style = "display : inline; font-size:48px;" class = "pangolin">Machines We Offer!</h3> 
-            <button class = "btn choc-button" style = "display: inline; float: right;">Add New Machine</button>
+            <button class = "btn choc-button" style = "display: inline; float: right;" (click) = "onAddCategory()">Add New Machine</button>
             <hr>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col col-xs-4" *ngFor = "let category of categoryList ; let i = index">
+    <div class="col col-xs-3" *ngFor = "let category of categoryList ; let i = index">
         <app-category-item [category] = category
         [categoryKeyInDb] = "categoryKeys[i]"></app-category-item>
     </div>
