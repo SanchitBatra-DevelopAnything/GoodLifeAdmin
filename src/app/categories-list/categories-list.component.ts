@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api/api.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-categories-list',
@@ -23,6 +24,11 @@ export class CategoriesListComponent implements OnInit {
   {
     this.isLoading = true;
     this.apiService.getCategories().subscribe((allCategories:any)=>{
+      if(allCategories == null)
+      {
+        this.isLoading =false;
+        return;
+      }
       this.categoryList = Object.values(allCategories);
       let categoryNames = [];
       for(let i=0;i<this.categoryList.length;i++)
@@ -32,7 +38,10 @@ export class CategoriesListComponent implements OnInit {
       this.categoryKeys = Object.keys(allCategories);
 
       this.isLoading = false;
-    });
+    }) , (error:any)=>{
+      this.isLoading = false;
+
+    };
   }
 
 }
