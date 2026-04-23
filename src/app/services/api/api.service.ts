@@ -9,7 +9,7 @@ import { Token } from '@angular/compiler';
 })
 export class ApiService {
 
-  dbUrl = "https://kidysadminapp-default-rtdb.firebaseio.com/";
+  dbUrl = "https://goodlifeadminapp-default-rtdb.asia-southeast1.firebasedatabase.app/";
   constructor(private http:HttpClient) { }
 
   public getAdmins() : Observable<any>
