@@ -1,29 +1,41 @@
-<p-dialog header="SURE?" [(visible)]="dialogVisible" [style]="{width: '50%'}" [modal] = "true">
+<p-dialog header="SURE?" [(visible)]="dialogVisible" [style]="{width: '50%'}" [modal]="true">
     <h6>
         Selected Item will be deleted. Click OK to proceed!
     </h6>
-    <button class = "btn choc-button" (click) = "deleteItem()">OK</button>
+    <button class="btn choc-button" (click)="deleteItem()">OK</button>
 </p-dialog>
+
 <div class="card bottom-spaced-box">
-    <img src = {{item.imgUrl}} class = "card-img-top img img-responsive">
+    
+    <img [src]="item.imgUrl" class="card-img-top">
+
     <div class="card-body">
-                <div style = "display: flex; flex-direction: column; height: 250px;">
-                    <h5 class="card-title center-text pangolin" style= "font-size: 30px; display: inline-block;">
-                        {{item.itemName | uppercase}}
-                    </h5>
-                    <div style = "display: flex;">
-                        <div style = "margin-left:10px;" class = "pangolin;">
-                            <p>DELHI-NCR-PRICE : Rs.{{item.delhi_ncr_price}}</p>
-                            <p>OUT-STATION-PRICE : Rs.{{item.out_station_price}}</p>
-                            <p>WESTERN-PRICE : Rs. {{item.western_price}}</p>
-                            <p>SUPER-STOCKIST-PRICE : Rs. {{item.super_stockist_price}}</p>    
-                            <p>MODERN-TRADE-PRICE : Rs. {{item.modern_trade_price}}</p>
-                        </div>
-                        <div class = "edit-btn-container">
-                             <p-speedDial [model]="items" direction="up"></p-speedDial> 
-                        </div>
-                    </div>
-                </div>
+
+        <h5 class="card-title center-text pangolin">
+            {{ item.itemName | uppercase }}
+        </h5>
+
+        <!-- Badge -->
+        <div class="custom-badge" 
+             [ngClass]="item.isCustomizable ? 'yes' : 'no'">
+            {{ item.isCustomizable ? 'Customizable' : 'Fixed Item' }}
+        </div>
+
+        <!-- Price -->
+        <div class="price-row pangolin">
+            PRICE : Rs.{{ item.price }}
+        </div>
+
+        <!-- ✅ Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn edit-btn" (click)="editItem()">
+                Edit
+            </button>
+
+            <button class="btn delete-btn" (click)="showDialog()">
+                Delete
+            </button>
+        </div>
+
     </div>
 </div>
-
