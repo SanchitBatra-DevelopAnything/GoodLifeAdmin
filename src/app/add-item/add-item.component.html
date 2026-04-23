@@ -1,6 +1,6 @@
 <!-- app.component.html -->
 <div class="container" *ngIf = "!isLoading">
-    <h1>Add items here!</h1>
+    <h1>Add spare parts here!</h1>
     <h5>for : {{parentCategoryData.categoryName}}</h5>
   
     <form [formGroup]="addItemForm" (ngSubmit) = "onSubmit(addItemForm.value)">
@@ -16,40 +16,32 @@
     </div>
   </div>
       <div class="form-group">
-        <label for="name">ITEM NAME</label>
+        <label for="name">SPARE PART NAME</label>
         <input type="text" id="name" formControlName="itemName" class = "form-control">
       </div>
       
-      <div>
+      <!-- <div>
           <p style = "text-align: center; font-size: 12px; font-weight: bold; color: red;">Please include GST as applicable in the prices!</p>
-      </div>
+      </div> -->
       <div class="form-group">
-        <label for="delhi_ncr_price">DELHI-NCR-PRICE</label>
-        <input type="number" id="delhi_ncr_price" formControlName="delhi_ncr_price" class = "form-control">
+        <label for="price">PRICE</label>
+        <input type="number" id="price" formControlName="price" class = "form-control">
       </div>
-  
-      <div class="form-group">
-        <label for="height">OUT-STATION-PRICE</label>
-        <input type="number" id="out_station_price" formControlName="out_station_price" class = "form-control">
-      </div>
-  
-      <div class="form-group">
-        <label for="weight">WESTERN-PRICE</label>
-        <input type="number" id="western_price" formControlName="western_price" class = "form-control">
-      </div>
-  
-      <div class="form-group">
-        <label for="salary">SUPER-STOCKIST-PRICE</label>
-        <input type="number" id="super_stockist_price" formControlName="super_stockist_price" class = "form-control">
-      </div>
-  
-      <div class="form-group">
-        <label for="rating">MODERN-TRADE-PRICE</label>
-        <input type="number" id="modern_trade_price" formControlName="modern_trade_price" class = "form-control">
+
+      <div class="form-group d-flex align-items-center justify-content-between mt-3">
+        <label for="isCustomizableToggle" class="mb-0">Customizable?</label>
+        <label class="switch">
+          <input
+            type="checkbox"
+            id="isCustomizableToggle"
+            formControlName="isCustomizable"
+          />
+          <span class="slider round"></span>
+        </label>
       </div>
 
       <div class="form-group">
-        <label for="rating">DETAILS (if any)</label>
+        <label for="rating">SPECS (if any)</label>
         <textarea rows="5" cols="60" name="text" placeholder="Enter Details for this item" formControlName = "details" class = "form-control"></textarea>
       </div>
   

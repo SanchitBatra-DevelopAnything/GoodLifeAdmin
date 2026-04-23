@@ -37,12 +37,9 @@ export class AddItemComponent implements OnInit{
 
     this.addItemForm = this.formBuilder.group({
       itemName: ['', Validators.required],
-      delhi_ncr_price: ['', Validators.required],
-      out_station_price: ['', Validators.required],
-      western_price: ['', Validators.required],
-      super_stockist_price: ['', Validators.required],
-      modern_trade_price: ['', Validators.required],
+      price:['' , Validators.required],
       details : [''],
+      isCustomizable:[false , Validators.required]
     });
   }
 
