@@ -43,11 +43,8 @@ export class EditItemComponent {
 
     this.editItemForm = this.formBuilder.group({
       itemName: [this.itemData["itemName"], Validators.required],
-      delhi_ncr_price: [this.itemData["delhi_ncr_price"], Validators.required],
-      out_station_price: [this.itemData["out_station_price"], Validators.required],
-      western_price: [this.itemData["western_price"], Validators.required],
-      super_stockist_price: [this.itemData["super_stockist_price"], Validators.required],
-      modern_trade_price: [this.itemData["modern_trade_price"], Validators.required],
+      price: [this.itemData["price"], Validators.required],
+      isCustomizable : [this.itemData["isCustomizable"] , Validators.required],
       details : [this.itemData['details']],
     });
 
