@@ -1,0 +1,47 @@
+<div class="loader center" *ngIf="isLoading"></div>
+
+<div class="container" *ngIf="!isLoading">
+  <h1>Edit Area</h1>
+
+  <form [formGroup]="editAreaForm" (ngSubmit)="onSubmit(editAreaForm.value)">
+
+    <div class="form-group">
+      <label>AREA NAME</label>
+      <input
+  type="text"
+  formControlName="areaName"
+  class="form-control"
+  [disabled]="true"
+/>
+    </div>
+
+    <div class="form-group">
+      <label>FREIGHT PERCENTAGE (%)</label>
+      <input
+        type="number"
+        formControlName="freightPercentage"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>AMC PRICE</label>
+      <input
+        type="number"
+        formControlName="amcPrice"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>AMC SERVICES</label>
+      <input
+        type="number"
+        formControlName="amcServices"
+        class="form-control"
+      />
+    </div>
+
+    <button type="submit" class="btn choc-button">Update Area</button>
+  </form>
+</div>

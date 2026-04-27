@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { AddAreaFormComponent } from 'src/app/add-area-form/add-area-form.component';
+import { EditAreaComponent } from 'src/app/edit-area/edit-area.component';
 import { ApiService } from 'src/app/services/api/api.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
@@ -19,6 +20,7 @@ export class DistributorAreasComponent implements OnInit,OnDestroy {
   areaKeys:any[] = [];
 
   areaAddedSub:Subscription | undefined;
+  areaEdittedSub:Subscription | undefined;
 
   constructor(private apiService:ApiService , private toastr:ToastrService , private dialogService:DialogService , private utilityService:UtilityService){}
 
@@ -26,10 +28,14 @@ export class DistributorAreasComponent implements OnInit,OnDestroy {
   {
     this.isLoading = true;
     this.getAreas();
-    this.utilityService.areaAdded.subscribe((_)=>{
+    this.areaAddedSub = this.utilityService.areaAdded.subscribe((_)=>{
       this.getAreas();
       this.ref?.close();
     });
+    this.areaEdittedSub = this.utilityService.areaEditted.subscribe((_)=>{
+      this.getAreas();
+      this.ref?.close();
+    })
   }
 
   getAreas()
@@ -64,7 +70,17 @@ export class DistributorAreasComponent implements OnInit,OnDestroy {
 
   editArea(area:any , index:number)
   {
-    
+    this.ref = this.dialogService.open(EditAreaComponent, {
+      header: 'Edit an area',
+      maximizable:true,
+      height : "800px",
+      width:"600px",
+      dismissableMask: true,
+      data: {
+        key: this.areaKeys[index],
+        areaData: area
+      }
+    });
   }
 
   onAddArea()
@@ -80,6 +96,7 @@ export class DistributorAreasComponent implements OnInit,OnDestroy {
   ngOnDestroy()
   {
     this.areaAddedSub?.unsubscribe();
+    this.areaEdittedSub?.unsubscribe();
   }
 
 }

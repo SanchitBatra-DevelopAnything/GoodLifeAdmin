@@ -1,0 +1,35 @@
+.container {
+    max-width: 500px;
+    margin: auto;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  input.form-control {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  button.choc-button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-weight: 600;
+  }
+  
+  button.choc-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .loader.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

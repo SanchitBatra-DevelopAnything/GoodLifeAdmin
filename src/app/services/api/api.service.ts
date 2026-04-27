@@ -280,5 +280,12 @@ export class ApiService {
     return this.http.put(this.dbUrl+"onlyCategories/"+parentKey+".json" , formValue);
   }
 
+  public editArea(areaKey: string, updatedArea: any) {
+    return this.http.put(
+      this.dbUrl + "Areas/" + areaKey + ".json",
+      updatedArea
+    );
+  }
+
 
 }

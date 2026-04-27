@@ -51,6 +51,7 @@ import { SignupFormComponent } from './signup-form/signup-form.component';
 import { PaymentCollectionMaintenanceComponent } from './payment-collection-maintenance/payment-collection-maintenance.component';
 import { AddItemInOrderComponent } from './add-item-in-order/add-item-in-order.component';
 import { AddCategoryFormComponent } from './add-category-form/add-category-form.component';
+import { EditAreaComponent } from './edit-area/edit-area.component';
 
 
 const appRoutes : Routes = [
@@ -97,6 +98,7 @@ const appRoutes : Routes = [
     PaymentCollectionMaintenanceComponent,
     AddItemInOrderComponent,
     AddCategoryFormComponent,
+    EditAreaComponent,
   ],
   imports: [
     BrowserModule,
