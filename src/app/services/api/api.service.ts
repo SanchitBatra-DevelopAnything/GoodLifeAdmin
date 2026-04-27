@@ -46,9 +46,13 @@ export class ApiService {
     return this.http.get(this.dbUrl+"DistributorNotifications.json");
   }
 
-  public makeDistributor(data:any) : Observable<any>
-  {
-    return this.http.post(this.dbUrl+"Distributors.json" , data);
+  makeDistributor(data: any): Observable<any> {
+    const payload = {
+      ...data,
+      outstandingBalance: 0
+    };
+  
+    return this.http.post(this.dbUrl + "Distributors.json", payload);
   }
 
   public deleteNotification(key:any) :Observable<any> {
