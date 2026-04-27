@@ -22,6 +22,9 @@ export class AddAreaFormComponent implements OnInit{
   {
     this.addAreaForm = this.formBuilder.group({
       areaName: ['', Validators.required],
+      freightPercentage: [null, [Validators.required, Validators.min(0)]],
+      amcPrice: [null, [Validators.required, Validators.min(0)]],
+      amcServices: [null, [Validators.required, Validators.min(0)]],
     });
   }
 

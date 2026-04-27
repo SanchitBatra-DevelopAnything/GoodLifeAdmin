@@ -1,19 +1,32 @@
-<div *ngIf = "!isLoading" class = "container">
-    <h1>Add a new area!</h1>
-    <h5>Yes! we're increasing our span!</h5>
-    <p>New distributors can be added in the areas!</p>
+<div *ngIf="!isLoading" class="container">
+  <h1>Add a new area!</h1>
+  <h5>Yes! we're increasing our span!</h5>
+  <p>New members can be added in the areas!</p>
 
+  <form [formGroup]="addAreaForm" (ngSubmit)="onSubmit(addAreaForm.value)">
 
-    <form [formGroup]="addAreaForm" (ngSubmit) = "onSubmit(addAreaForm.value)">
+    <div class="form-group">
+      <label for="name">AREA NAME :</label>
+      <input type="text" id="name" formControlName="areaName" class="form-control">
+    </div>       
 
-           <div class="form-group">
-             <label for="name">AREA NAME : </label>
-             <input type="text" id="name" formControlName="areaName" class = "form-control">
-           </div>       
-           <button type="submit" class = "btn choc-button">Submit</button>
-         </form>
+    <div class="form-group">
+      <label for="freight">FREIGHT PERCENTAGE :</label>
+      <input type="number" id="freight" formControlName="freightPercentage" class="form-control">
+    </div>
 
+    <div class="form-group">
+      <label for="amcPrice">AMC PRICE :</label>
+      <input type="number" id="amcPrice" formControlName="amcPrice" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="amcServices">AMC SERVICES :</label>
+      <input type="number" id="amcServices" formControlName="amcServices" class="form-control">
+    </div>
+
+    <button type="submit" class="btn choc-button">Submit</button>
+  </form>
 </div>
 
-<div class="loader" *ngIf = "isLoading" style = "position: absolute; top:50%; left: 50%;"></div>
-
+<div class="loader" *ngIf="isLoading" style="position: absolute; top:50%; left: 50%;"></div>
