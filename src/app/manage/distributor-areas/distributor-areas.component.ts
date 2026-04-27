@@ -62,6 +62,11 @@ export class DistributorAreasComponent implements OnInit,OnDestroy {
     });
   }
 
+  editArea(area:any , index:number)
+  {
+    
+  }
+
   onAddArea()
   {
     this.ref = this.dialogService.open(AddAreaFormComponent, { 
