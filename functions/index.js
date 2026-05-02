@@ -1,32 +1,72 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const { https } = require("firebase-functions/v2");
+const admin = require("firebase-admin");
+const cors = require("cors")({ origin: true });
 
-const {setGlobalOptions} = require("firebase-functions");
-const {onRequest} = require("firebase-functions/https");
-const logger = require("firebase-functions/logger");
+if (!admin.apps.length) {
+  admin.initializeApp({
+    databaseURL:
+      "https://goodlifeadminapp-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  });
+}
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+exports.loginParty = https.onRequest(
+  { region: "asia-southeast1" },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        // ✅ Only POST allowed
+        if (req.method !== "POST") {
+          return res.status(405).json({ error: "Method Not Allowed" });
+        }
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+        const { mobile, areaName } = req.body;
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+        if (!mobile || !areaName) {
+          return res.status(400).json({
+            error: "mobile and areaName are required",
+          });
+        }
+
+        console.log("📥 Login request:", { mobile, areaName });
+
+        // ✅ Query ONLY matching distributor(s)
+        const snapshot = await admin
+          .database()
+          .ref("/Distributors")
+          .orderByChild("contact")
+          .equalTo(mobile)
+          .once("value");
+
+        const data = snapshot.val();
+
+        if (!data) {
+          console.log("❌ Mobile not found");
+          return res.status(500).json({ error: "Login failed" });
+        }
+
+        // ✅ Since contact is unique, take first match
+        const distributor = Object.values(data)[0];
+
+        // ✅ Area validation (case-insensitive)
+        if (
+          !distributor.area ||
+          distributor.area.toLowerCase() !== areaName.toLowerCase()
+        ) {
+          console.log("❌ Area mismatch", {
+            expected: distributor.area,
+            received: areaName,
+          });
+
+          return res.status(500).json({ error: "Login failed" });
+        }
+
+        console.log("✅ Login success:", mobile);
+
+        return res.status(200).json(distributor);
+      } catch (error) {
+        console.error("💥 Error:", error);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+    });
+  }
+);
