@@ -52,6 +52,7 @@ import { PaymentCollectionMaintenanceComponent } from './payment-collection-main
 import { AddItemInOrderComponent } from './add-item-in-order/add-item-in-order.component';
 import { AddCategoryFormComponent } from './add-category-form/add-category-form.component';
 import { EditAreaComponent } from './edit-area/edit-area.component';
+import { SparePartsOrdersDashboardComponent } from './spare-part-orders-dashboard/spare-part-orders-dashboard.component';
 
 
 const appRoutes : Routes = [
@@ -59,7 +60,6 @@ const appRoutes : Routes = [
   {path: 'categories' , component : CategoriesListComponent},
   {path : 'itemsOf/:categoryKey/:categoryName' , component : ItemListComponent },
   {path:'notifications' , component:NotificationsComponent},
-  {path : 'dailyReport' , component : OrdersComponent},
   {path : 'manage' , component : ManageComponent},
   {path : 'manage' , component : ManageComponent , children:[
     {path : 'areas', component : DistributorAreasComponent},
@@ -70,6 +70,7 @@ const appRoutes : Routes = [
   {path : 'processedOrders' , component : OldOrdersComponent},
   {path : 'orderBill/:orderArea/:orderedBy/:orderKey' , component : OrderDetailComponent},
   {path : 'signup' , component : SignupFormComponent},
+  {path : 'dailyReport' , component : SparePartsOrdersDashboardComponent},
 ];
 
 @NgModule({
@@ -99,6 +100,7 @@ const appRoutes : Routes = [
     AddItemInOrderComponent,
     AddCategoryFormComponent,
     EditAreaComponent,
+    SparePartsOrdersDashboardComponent,
   ],
   imports: [
     BrowserModule,

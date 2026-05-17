@@ -291,5 +291,10 @@ export class ApiService {
     );
   }
 
+  public getAllSparePartOrders() : Observable<any>
+  {
+    return this.http.get(this.dbUrl+"activeOrders.json");
+  }
+
 
 }

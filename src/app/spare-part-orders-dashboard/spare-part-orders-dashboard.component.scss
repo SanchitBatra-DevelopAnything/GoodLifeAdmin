@@ -1,0 +1,91 @@
+.orders-dashboard {
+    padding: 24px;
+    background: #f4f5f7;
+    min-height: 100vh;
+  }
+  
+  .section {
+    margin-bottom: 40px;
+  }
+  
+  .section-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  
+  .pending {
+    color: #d97706;
+  }
+  
+  .verification {
+    color: #dc2626;
+  }
+  
+  .verified {
+    color: #2563eb;
+  }
+  
+  .dispatch {
+    color: #16a34a;
+  }
+  
+  .orders-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .sticky-note {
+    width: 240px;
+    min-height: 180px;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+    transform: rotate(-1deg);
+    transition: 0.2s ease;
+    position: relative;
+  }
+  
+  .sticky-note:hover {
+    transform: rotate(0deg) scale(1.03);
+  }
+  
+  .sticky-note::before {
+    content: '';
+    width: 60px;
+    height: 20px;
+    background: rgba(255,255,255,0.5);
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-4deg);
+    border-radius: 4px;
+  }
+  
+  .pending-note {
+    background: #fde68a;
+  }
+  
+  .verification-note {
+    background: #fecaca;
+  }
+  
+  .verified-note {
+    background: #bfdbfe;
+  }
+  
+  .dispatch-note {
+    background: #bbf7d0;
+  }
+  
+  .username {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  .details p {
+    margin: 6px 0;
+    font-size: 14px;
+  }
