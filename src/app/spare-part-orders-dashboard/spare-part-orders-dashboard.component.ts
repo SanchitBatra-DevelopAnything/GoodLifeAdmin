@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../services/api/api.service';
 
-
 export interface Order {
+  firebaseOrderId: string;
   orderId: string;
   orderedBy: string;
   orderDate: string;
@@ -16,24 +17,38 @@ export interface Order {
 @Component({
   selector: 'app-orders-dashboard',
   templateUrl: './spare-part-orders-dashboard.component.html',
-styleUrls: ['./spare-part-orders-dashboard.component.scss']
+  styleUrls: ['./spare-part-orders-dashboard.component.scss']
 })
 export class SparePartsOrdersDashboardComponent implements OnInit {
 
   pendingOrders: Order[] = [];
+
   paymentVerificationOrders: Order[] = [];
+
   paymentVerifiedOrders: Order[] = [];
-  readyToDispatchOrders: Order[] = [];
 
   loading = false;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getAllOrders();
   }
 
+  openOrder(order: any): void {
+
+    this.router.navigate([
+      '/orderDetail/sparePart',
+      order.orderedBy,
+      order.firebaseOrderId
+    ]);
+  }
+
   getAllOrders(): void {
+
     this.loading = true;
 
     this.apiService.getAllSparePartOrders().subscribe({
@@ -50,6 +65,7 @@ export class SparePartsOrdersDashboardComponent implements OnInit {
             const order = userOrders[key];
 
             allOrders.push({
+              firebaseOrderId: key,
               orderId: order.orderId,
               orderedBy: order.orderedBy,
               orderDate: order.orderDate,
@@ -77,9 +93,10 @@ export class SparePartsOrdersDashboardComponent implements OnInit {
   segregateOrders(orders: Order[]): void {
 
     this.pendingOrders = [];
+
     this.paymentVerificationOrders = [];
+
     this.paymentVerifiedOrders = [];
-    this.readyToDispatchOrders = [];
 
     orders.forEach(order => {
 
@@ -95,10 +112,6 @@ export class SparePartsOrdersDashboardComponent implements OnInit {
 
         case 'PAYMENT_VERIFIED':
           this.paymentVerifiedOrders.push(order);
-          break;
-
-        case 'READY_TO_DISPATCH':
-          this.readyToDispatchOrders.push(order);
           break;
       }
     });

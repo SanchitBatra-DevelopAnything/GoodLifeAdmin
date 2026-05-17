@@ -296,5 +296,65 @@ export class ApiService {
     return this.http.get(this.dbUrl+"activeOrders.json");
   }
 
+  public getSparePartOrder(
+    orderedBy: string,
+    firebaseOrderId: string
+  ): Observable<any>
+  {
+    return this.http.get(
+      this.dbUrl +
+      "activeOrders/" +
+      orderedBy +
+      "/" +
+      firebaseOrderId +
+      ".json"
+    );
+  }
+  
+  public updateOrder(
+    username: string,
+    firebaseOrderId: string,
+    data: any
+  ): Observable<any>
+  {
+    return this.http.patch(
+      this.dbUrl +
+      "activeOrders/" +
+      username +
+      "/" +
+      firebaseOrderId +
+      ".json",
+      data
+    );
+  }
+  
+  public moveToCompletedOrders(
+    order: any
+  ): Observable<any>
+  {
+    return this.http.post(
+      this.dbUrl +
+      "completedOrders/" +
+      order.orderedBy +
+      ".json",
+      order
+    );
+  }
+  
+  public deleteActiveSparePartOrder(
+    username: string,
+    firebaseOrderId: string
+  ): Observable<any>
+  {
+    return this.http.delete(
+      this.dbUrl +
+      "activeOrders/" +
+      username +
+      "/" +
+      firebaseOrderId +
+      ".json"
+    );
+  }
+
 
 }

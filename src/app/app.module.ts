@@ -53,6 +53,7 @@ import { AddItemInOrderComponent } from './add-item-in-order/add-item-in-order.c
 import { AddCategoryFormComponent } from './add-category-form/add-category-form.component';
 import { EditAreaComponent } from './edit-area/edit-area.component';
 import { SparePartsOrdersDashboardComponent } from './spare-part-orders-dashboard/spare-part-orders-dashboard.component';
+import { SparePartOrderDetailComponent } from './spare-part-order-detail/spare-part-order-detail.component';
 
 
 const appRoutes : Routes = [
@@ -68,7 +69,10 @@ const appRoutes : Routes = [
   ] ,},
   {path : 'reporting' , component : ReportingComponent},
   {path : 'processedOrders' , component : OldOrdersComponent},
-  {path : 'orderBill/:orderArea/:orderedBy/:orderKey' , component : OrderDetailComponent},
+  {
+    path: 'orderDetail/sparePart/:orderedBy/:id',
+    component: SparePartOrderDetailComponent
+  },
   {path : 'signup' , component : SignupFormComponent},
   {path : 'dailyReport' , component : SparePartsOrdersDashboardComponent},
 ];
@@ -101,6 +105,7 @@ const appRoutes : Routes = [
     AddCategoryFormComponent,
     EditAreaComponent,
     SparePartsOrdersDashboardComponent,
+    SparePartOrderDetailComponent,
   ],
   imports: [
     BrowserModule,

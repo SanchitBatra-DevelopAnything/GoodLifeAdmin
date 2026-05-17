@@ -1,0 +1,298 @@
+<div
+  class="page"
+  *ngIf="order"
+>
+
+  <div class="hero-card">
+
+    <div class="top-section">
+
+      <div>
+
+        <h1>
+          {{ order.orderedBy }}
+        </h1>
+
+        <div class="status-chip">
+          {{ order.status }}
+        </div>
+
+      </div>
+
+      <button
+        class="back-btn"
+        routerLink="/"
+      >
+        Back
+      </button>
+
+    </div>
+
+    <div class="hero-grid">
+
+      <div class="info-box">
+        <label>Order Id</label>
+        <p>{{ order.orderId }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Date</label>
+        <p>{{ order.orderDate }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Time</label>
+        <p>{{ order.orderTime }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Area</label>
+        <p>{{ order.area }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Contact</label>
+        <p>{{ order.contact }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Total Price</label>
+        <p>₹{{ order.totalPrice }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>GST</label>
+        <p>₹{{ order.GSTAmount }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Freight</label>
+        <p>₹{{ order.FreightCharges }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Freight %</label>
+        <p>{{ order.FreightPercentage }}%</p>
+      </div>
+
+      <div class="info-box">
+        <label>Item Total</label>
+        <p>₹{{ order.itemTotal }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="table-card">
+
+    <div class="card-header">
+      <h2>Order Items</h2>
+    </div>
+
+    <div class="table-wrapper">
+
+      <table class="items-table">
+
+        <thead>
+
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Customization</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let item of order.items;
+              let i = index
+            "
+          >
+
+            <td>{{ i + 1 }}</td>
+
+            <td class="item-name">
+              {{ item.name }}
+            </td>
+
+            <td>
+
+              <span
+                *ngIf="
+                  item.customizationMessage
+                "
+                class="customization-badge"
+              >
+                {{ item.customizationMessage }}
+              </span>
+
+              <span
+                *ngIf="
+                  !item.customizationMessage
+                "
+                class="no-customization"
+              >
+                —
+              </span>
+
+            </td>
+
+            <td>
+              {{ item.quantity }}
+            </td>
+
+            <td>
+              ₹{{ item.price }}
+            </td>
+
+            <td class="total-price">
+              ₹{{ item.totalPrice }}
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div class="documents-card">
+
+    <h2>Documents</h2>
+
+    <div
+      *ngIf="
+        !order.documents ||
+        order.documents.length === 0
+      "
+      class="empty-docs"
+    >
+      No documents uploaded
+    </div>
+
+    <div
+      *ngFor="
+        let doc of order.documents
+      "
+      class="document-item"
+    >
+
+      <img
+        *ngIf="isImage(doc)"
+        [src]="doc"
+        class="preview-image"
+      />
+
+      <a
+        [href]="doc"
+        target="_blank"
+      >
+        Download Document
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="actions">
+
+    <button
+      *ngIf="
+        order.status === 'PENDING'
+      "
+      class="secondary-btn"
+      (click)="openAddBalancePopup()"
+    >
+      Add Balance
+    </button>
+
+    <button
+      *ngIf="
+        order.status === 'PENDING'
+      "
+      class="primary-btn"
+      (click)="verifyPayment()"
+    >
+      Verify Payment
+    </button>
+
+    <button
+      *ngIf="
+        order.status ===
+        'PAYMENT_VERIFICATION'
+      "
+      class="danger-btn"
+      (click)="moveToPending()"
+    >
+      Move To Pending
+    </button>
+
+    <button
+      *ngIf="
+        order.status ===
+        'PAYMENT_VERIFICATION'
+      "
+      class="primary-btn"
+      (click)="verifyPayment()"
+    >
+      Verify Payment
+    </button>
+
+    <button
+      *ngIf="
+        order.status ===
+        'PAYMENT_VERIFIED'
+      "
+      class="success-btn"
+      (click)="dispatchOrder()"
+    >
+      Dispatch Order
+    </button>
+
+  </div>
+
+  <div
+    class="popup-backdrop"
+    *ngIf="showAddBalancePopup"
+  >
+
+    <div class="popup">
+
+      <h2>Add Balance</h2>
+
+      <input
+        type="number"
+        [(ngModel)]="balanceAmount"
+        placeholder="Enter amount"
+      />
+
+      <div class="popup-actions">
+
+        <button
+          class="danger-btn"
+          (click)="closeAddBalancePopup()"
+        >
+          Cancel
+        </button>
+
+        <button class="primary-btn">
+          Submit
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

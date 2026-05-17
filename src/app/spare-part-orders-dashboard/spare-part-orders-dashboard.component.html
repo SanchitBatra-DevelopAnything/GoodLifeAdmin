@@ -1,106 +1,184 @@
 <div class="orders-dashboard">
 
-    <div class="section">
-  
-      <h2 class="section-title pending">
-        Pending ({{ pendingOrders.length }})
-      </h2>
-  
-      <div class="orders-grid">
-        <div
-          class="sticky-note pending-note"
-          *ngFor="let order of pendingOrders"
-        >
+  <div class="section">
+
+    <h2 class="section-title pending">
+      Pending Orders
+      ({{ pendingOrders.length }})
+    </h2>
+
+    <div class="orders-grid">
+
+      <div
+        class="sticky-note pending-note"
+        *ngFor="let order of pendingOrders"
+        (click)="openOrder(order)"
+      >
+
+        <div class="top-bar">
+
           <div class="username">
             {{ order.orderedBy }}
           </div>
-  
-          <div class="details">
-            <p><strong>Date:</strong> {{ order.orderDate }}</p>
-            <p><strong>Time:</strong> {{ order.orderTime }}</p>
-            <p><strong>Area:</strong> {{ order.area }}</p>
-            <p><strong>Total:</strong> ₹{{ order.totalPrice }}</p>
+
+          <div class="status-badge pending-badge">
+            Pending
           </div>
+
         </div>
-      </div>
-    </div>
-  
-    <div class="section">
-  
-      <h2 class="section-title verification">
-        Payment Verification Needed
-        ({{ paymentVerificationOrders.length }})
-      </h2>
-  
-      <div class="orders-grid">
-        <div
-          class="sticky-note verification-note"
-          *ngFor="let order of paymentVerificationOrders"
-        >
-          <div class="username">
-            {{ order.orderedBy }}
+
+        <div class="details">
+
+          <div class="detail-row">
+            <span>Date</span>
+            <strong>{{ order.orderDate }}</strong>
           </div>
-  
-          <div class="details">
-            <p><strong>Date:</strong> {{ order.orderDate }}</p>
-            <p><strong>Time:</strong> {{ order.orderTime }}</p>
-            <p><strong>Area:</strong> {{ order.area }}</p>
-            <p><strong>Total:</strong> ₹{{ order.totalPrice }}</p>
+
+          <div class="detail-row">
+            <span>Time</span>
+            <strong>{{ order.orderTime }}</strong>
           </div>
+
+          <div class="detail-row">
+            <span>Area</span>
+            <strong>{{ order.area }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Total</span>
+            <strong>
+              ₹{{ order.totalPrice }}
+            </strong>
+          </div>
+
         </div>
+
       </div>
+
     </div>
-  
-    <div class="section">
-  
-      <h2 class="section-title verified">
-        Payment Verified
-        ({{ paymentVerifiedOrders.length }})
-      </h2>
-  
-      <div class="orders-grid">
-        <div
-          class="sticky-note verified-note"
-          *ngFor="let order of paymentVerifiedOrders"
-        >
-          <div class="username">
-            {{ order.orderedBy }}
-          </div>
-  
-          <div class="details">
-            <p><strong>Date:</strong> {{ order.orderDate }}</p>
-            <p><strong>Time:</strong> {{ order.orderTime }}</p>
-            <p><strong>Area:</strong> {{ order.area }}</p>
-            <p><strong>Total:</strong> ₹{{ order.totalPrice }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-    <div class="section">
-  
-      <h2 class="section-title dispatch">
-        Ready To Dispatch
-        ({{ readyToDispatchOrders.length }})
-      </h2>
-  
-      <div class="orders-grid">
-        <div
-          class="sticky-note dispatch-note"
-          *ngFor="let order of readyToDispatchOrders"
-        >
-          <div class="username">
-            {{ order.orderedBy }}
-          </div>
-  
-          <div class="details">
-            <p><strong>Date:</strong> {{ order.orderDate }}</p>
-            <p><strong>Time:</strong> {{ order.orderTime }}</p>
-            <p><strong>Area:</strong> {{ order.area }}</p>
-            <p><strong>Total:</strong> ₹{{ order.totalPrice }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  
+
   </div>
+
+  <div class="section">
+
+    <h2 class="section-title verification">
+      Payment Verification
+      ({{ paymentVerificationOrders.length }})
+    </h2>
+
+    <div class="orders-grid">
+
+      <div
+        class="sticky-note verification-note"
+        *ngFor="
+          let order of paymentVerificationOrders
+        "
+        (click)="openOrder(order)"
+      >
+
+        <div class="top-bar">
+
+          <div class="username">
+            {{ order.orderedBy }}
+          </div>
+
+          <div class="status-badge verification-badge">
+            Verification
+          </div>
+
+        </div>
+
+        <div class="details">
+
+          <div class="detail-row">
+            <span>Date</span>
+            <strong>{{ order.orderDate }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Time</span>
+            <strong>{{ order.orderTime }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Area</span>
+            <strong>{{ order.area }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Total</span>
+            <strong>
+              ₹{{ order.totalPrice }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="section">
+
+    <h2 class="section-title verified">
+      Payment Verified
+      ({{ paymentVerifiedOrders.length }})
+    </h2>
+
+    <div class="orders-grid">
+
+      <div
+        class="sticky-note verified-note"
+        *ngFor="
+          let order of paymentVerifiedOrders
+        "
+        (click)="openOrder(order)"
+      >
+
+        <div class="top-bar">
+
+          <div class="username">
+            {{ order.orderedBy }}
+          </div>
+
+          <div class="status-badge verified-badge">
+            Verified
+          </div>
+
+        </div>
+
+        <div class="details">
+
+          <div class="detail-row">
+            <span>Date</span>
+            <strong>{{ order.orderDate }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Time</span>
+            <strong>{{ order.orderTime }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Area</span>
+            <strong>{{ order.area }}</strong>
+          </div>
+
+          <div class="detail-row">
+            <span>Total</span>
+            <strong>
+              ₹{{ order.totalPrice }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
