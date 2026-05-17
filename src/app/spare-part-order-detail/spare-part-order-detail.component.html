@@ -21,7 +21,7 @@
 
       <button
         class="back-btn"
-        routerLink="/"
+        routerLink="/dailyReport"
       >
         Back
       </button>
@@ -168,7 +168,16 @@
 
   <div class="documents-card">
 
-    <h2>Documents</h2>
+    <h2>
+        Documents
+        (
+        {{
+          order.documents
+            ? order.documents.length
+            : 0
+        }}
+        )
+      </h2>
 
     <div
       *ngIf="
@@ -205,6 +214,35 @@
   </div>
 
   <div class="actions">
+
+    <div
+  *ngIf="
+    order.status === 'PENDING'
+  "
+  class="upload-section"
+>
+
+  <input
+    type="file"
+    (change)="onFileSelected($event)"
+  />
+
+  <button
+    class="primary-btn"
+    [disabled]="
+      !selectedFile ||
+      isUploading
+    "
+    (click)="uploadDocument()"
+  >
+    {{
+      isUploading
+        ? 'Uploading...'
+        : 'Upload Document'
+    }}
+  </button>
+
+</div>
 
     <button
       *ngIf="

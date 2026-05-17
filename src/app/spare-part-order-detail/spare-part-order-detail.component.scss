@@ -221,3 +221,18 @@
     justify-content: flex-end;
     gap: 12px;
   }
+
+  .upload-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .upload-section input[type="file"] {
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+  }

@@ -2,16 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api/api.service';
 
+import {
+  AngularFireStorage,
+  AngularFireUploadTask
+} from '@angular/fire/compat/storage';
+
 @Component({
   selector: 'app-spare-part-order-detail',
-  templateUrl: './spare-part-order-detail.component.html',
-  styleUrls: ['./spare-part-order-detail.component.scss']
+  templateUrl:
+    './spare-part-order-detail.component.html',
+  styleUrls: [
+    './spare-part-order-detail.component.scss'
+  ]
 })
-export class SparePartOrderDetailComponent implements OnInit {
+export class SparePartOrderDetailComponent
+  implements OnInit {
 
   order: any;
 
   selectedFile: File | null = null;
+
+  uploadTask:
+    AngularFireUploadTask | any;
+
+  isUploading = false;
 
   showAddBalancePopup = false;
 
@@ -20,7 +34,8 @@ export class SparePartOrderDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private storage: AngularFireStorage
   ) {}
 
   ngOnInit(): void {
@@ -112,10 +127,95 @@ export class SparePartOrderDetailComponent implements OnInit {
           )
           .subscribe(() => {
 
-            this.router.navigate(['/']);
+            this.router.navigate(['/dailyReport']);
           });
 
       });
+  }
+
+  onFileSelected(event: any): void {
+
+    if (
+      event.target.files &&
+      event.target.files.length > 0
+    ) {
+
+      this.selectedFile =
+        event.target.files[0];
+    }
+  }
+
+  async uploadDocument(): Promise<void> {
+
+    if (!this.selectedFile) {
+      return;
+    }
+
+    this.isUploading = true;
+
+    try {
+
+      const currentDate =
+        new Date()
+          .toISOString()
+          .split('T')[0];
+
+      const filePath =
+        `sparePartPayments/${currentDate}/admin/${Date.now()}_${this.selectedFile.name}`;
+
+      const fileRef =
+        this.storage.ref(filePath);
+
+      this.uploadTask =
+        this.storage.upload(
+          filePath,
+          this.selectedFile
+        );
+
+      const uploadResult =
+        await this.uploadTask;
+
+      uploadResult.ref
+        .getDownloadURL()
+        .then((downloadUrl: string) => {
+
+          const existingDocuments =
+            this.order.documents || [];
+
+          const updatedDocuments = [
+            ...existingDocuments,
+            downloadUrl
+          ];
+
+          this.apiService.updateOrder(
+            this.order.orderedBy,
+            this.order.firebaseOrderId,
+            {
+              documents:
+                updatedDocuments
+            }
+          )
+          .subscribe(() => {
+
+            this.order.documents =
+              updatedDocuments;
+
+            this.selectedFile = null;
+
+            this.isUploading = false;
+          });
+
+        });
+
+    } catch (error) {
+
+      console.error(
+        'Upload failed',
+        error
+      );
+
+      this.isUploading = false;
+    }
   }
 
   isImage(url: string): boolean {
