@@ -14,7 +14,7 @@ exports.loginParty = https.onRequest(
   (req, res) => {
     cors(req, res, async () => {
       try {
-        // ✅ Only POST allowed
+        // Only POST allowed
         if (req.method !== "POST") {
           return res.status(405).json({ error: "Method Not Allowed" });
         }
@@ -29,25 +29,24 @@ exports.loginParty = https.onRequest(
 
         console.log("📥 Login request:", { mobile, areaName });
 
-        // ✅ Query ONLY matching distributor(s)
-        const snapshot = await admin
+        // Find distributor by mobile
+        const distributorSnapshot = await admin
           .database()
           .ref("/Distributors")
           .orderByChild("contact")
           .equalTo(mobile)
           .once("value");
 
-        const data = snapshot.val();
+        const distributorData = distributorSnapshot.val();
 
-        if (!data) {
+        if (!distributorData) {
           console.log("❌ Mobile not found");
           return res.status(500).json({ error: "Login failed" });
         }
 
-        // ✅ Since contact is unique, take first match
-        const distributor = Object.values(data)[0];
+        const distributor = Object.values(distributorData)[0];
 
-        // ✅ Area validation (case-insensitive)
+        // Area validation
         if (
           !distributor.area ||
           distributor.area.toLowerCase() !== areaName.toLowerCase()
@@ -60,12 +59,38 @@ exports.loginParty = https.onRequest(
           return res.status(500).json({ error: "Login failed" });
         }
 
+        // Fetch Area Details
+        let areaDetails = null;
+
+        if (distributor.areaId) {
+          const areaSnapshot = await admin
+            .database()
+            .ref(`/Areas/${distributor.areaId}`)
+            .once("value");
+
+          areaDetails = areaSnapshot.val();
+        }
+
+        const response = {
+          distributorDetails: {
+            allowPayLater: distributor.allowPayLater ?? false,
+            area: distributor.area ?? "",
+            contact: distributor.contact ?? "",
+            deviceToken: distributor.deviceToken ?? "",
+            distributorName: distributor.distributorName ?? "",
+            machineIds: distributor.machineIds ?? [],
+          },
+          areaDetails: areaDetails || {},
+        };
+
         console.log("✅ Login success:", mobile);
 
-        return res.status(200).json(distributor);
+        return res.status(200).json(response);
       } catch (error) {
         console.error("💥 Error:", error);
-        return res.status(500).json({ error: "Internal server error" });
+        return res.status(500).json({
+          error: "Internal server error",
+        });
       }
     });
   }
