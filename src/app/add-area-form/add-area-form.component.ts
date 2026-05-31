@@ -25,6 +25,8 @@ export class AddAreaFormComponent implements OnInit{
       freightPercentage: [null, [Validators.required, Validators.min(0)]],
       amcPrice: [null, [Validators.required, Validators.min(0)]],
       amcServices: [null, [Validators.required, Validators.min(0)]],
+      salesPerson:['', Validators.required],
+      salesContact: ['', Validators.required],
     });
   }
 
