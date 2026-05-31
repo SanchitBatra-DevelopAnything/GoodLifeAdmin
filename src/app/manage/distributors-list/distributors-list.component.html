@@ -1,12 +1,112 @@
 <div class = "loader center" *ngIf = "isLoading"></div>
 <div class="container" *ngIf = "!isLoading">
-    <h3 class = "inline-heading">Distributors</h3>
-    <p>New distributors will be added through the Kidys Bakery Mobile App. Please see the <a routerLink = "/notifications">notifications</a>  to add new distributor into the system.</p>
+    <h3 class = "inline-heading">Parties</h3>
+    <p>New parties will be added through the Kidys Bakery Mobile App. Please see the <a routerLink = "/notifications">notifications</a>  to add new party into the system.</p>
     <hr>
     <input type = "text" placeholder = "search by distributorship or distributor name" style = "width: 40%;" (input) = "filterDistributors($event)">
     <ul class="list-group list-group-flush" style = "margin-top:10px;">
-        <li class="list-group-item" style ="height:50px;" *ngFor = "let distributor of filteredDistributorUsefulData; let i = index;">{{distributor.distributorName | uppercase}} , {{distributor.area | uppercase}} , {{distributor.GST}} , {{distributor.attachedPriceList | uppercase}}
-            <button class = "btn btn-danger" style = "float:right;" (click) = "deleteDistributor(distributorKeys[i])">Delete</button>
+        <li class="list-group-item" style ="height:50px;" *ngFor = "let distributor of filteredDistributorUsefulData; let i = index;">{{distributor.distributorName | uppercase}} , {{distributor.area | uppercase}} , {{distributor.contact}}
+            <button class = "btn btn-danger" style = "float:right;" (click) = "deleteDistributor(distributor.distributorKey)">Delete</button>
+            <button class = "btn btn-success" style = "float:right;margin-right:10px;" (click) = "editDistributor(distributor.distributorKey)">Edit</button>
         </li>
       </ul>
+</div>
+
+<!-- EDIT DISTRIBUTOR MODAL -->
+
+<div
+  *ngIf="isEditModalOpen"
+  class="modal-backdrop-custom">
+
+  <div class="approval-modal">
+
+    <div class="modal-header-custom">
+
+      <h4>Edit Distributor</h4>
+
+      <button
+        type="button"
+        class="close-btn"
+        (click)="closeEditModal()">
+        ×
+      </button>
+
+    </div>
+
+    <hr>
+
+    <h5>Machine Access</h5>
+
+    <p style="color:#666;margin-bottom:15px;">
+      Select machines this distributor can access.
+    </p>
+
+    <div
+      *ngIf="allMachines.length === 0"
+      style="color:red;">
+      No machines found.
+    </div>
+
+    <div
+      *ngFor="let machine of allMachines"
+      class="machine-row">
+
+      <label
+        style="display:flex;align-items:center;gap:10px;width:100%;cursor:pointer;">
+
+        <input
+          type="checkbox"
+          [checked]="selectedMachineIds.includes(machine.id)"
+          (change)="toggleMachine(machine.id, $event)">
+
+        <span>
+          {{ machine.categoryName || machine.name }}
+        </span>
+
+      </label>
+
+    </div>
+
+    <hr>
+
+    <h5>Additional Permissions</h5>
+
+    <div class="paylater-row">
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          [(ngModel)]="allowPayLater">
+
+        <span class="slider round"></span>
+
+      </label>
+
+      <span class="paylater-label">
+        Allow Pay Later
+      </span>
+
+    </div>
+
+    <hr>
+
+    <div class="action-buttons">
+
+      <button
+        class="btn btn-secondary"
+        (click)="closeEditModal()">
+        Cancel
+      </button>
+
+      <button
+        class="btn btn-success"
+        (click)="saveDistributorChanges()">
+        Save Changes
+      </button>
+
+    </div>
+
+  </div>
+
 </div>

@@ -15,6 +15,16 @@ export class DistributorsListComponent {
   isLoading:boolean = false;
   filteredDistributorUsefulData:any[] = [];
 
+  selectedDistributor: any = null;
+
+allMachines: any[] = [];
+
+selectedMachineIds: string[] = [];
+
+allowPayLater: boolean = false;
+
+isEditModalOpen: boolean = false;
+
   constructor(private apiService : ApiService , private toastr : ToastrService) { }
 
   ngOnInit(): void {
@@ -88,6 +98,104 @@ export class DistributorsListComponent {
       }
       return false;
     });
+  }
+
+  editDistributor(distributorKey: any) {
+
+    const distributor = this.distributorUsefulData.find(
+      d => d.distributorKey === distributorKey
+    );
+  
+    if (!distributor) {
+      return;
+    }
+  
+    this.selectedDistributor = distributor;
+  
+    this.selectedMachineIds = distributor.machineIds
+      ? [...distributor.machineIds]
+      : [];
+  
+    this.allowPayLater = distributor.allowPayLater ?? false;
+  
+    this.apiService.getCategories().subscribe((categories: any) => {
+  
+      if (!categories) {
+        this.allMachines = [];
+      } else {
+  
+        this.allMachines = Object.keys(categories).map(key => ({
+          id: key,
+          ...categories[key]
+        }));
+  
+      }
+  
+      this.isEditModalOpen = true;
+    });
+  }
+
+  toggleMachine(machineId: string, event: any) {
+
+    if (event.target.checked) {
+  
+      if (!this.selectedMachineIds.includes(machineId)) {
+        this.selectedMachineIds.push(machineId);
+      }
+  
+    } else {
+  
+      this.selectedMachineIds =
+        this.selectedMachineIds.filter(id => id !== machineId);
+  
+    }
+  
+  }
+
+  saveDistributorChanges() {
+
+    if (!this.selectedDistributor) {
+      return;
+    }
+  
+    const payload = {
+      machineIds: this.selectedMachineIds,
+      allowPayLater: this.allowPayLater
+    };
+  
+    this.apiService
+      .updateDistributor(
+        this.selectedDistributor.distributorKey,
+        payload
+      )
+      .subscribe(() => {
+  
+        this.toastr.success(
+          'Distributor Updated Successfully',
+          'Notification!',
+          {
+            timeOut: 4000,
+            closeButton: true,
+            positionClass: 'toast-bottom-right'
+          }
+        );
+  
+        this.closeEditModal();
+  
+        this.getDistributors();
+  
+      });
+  
+  }
+
+  closeEditModal() {
+
+    this.isEditModalOpen = false;
+  
+    this.selectedDistributor = null;
+  
+    this.selectedMachineIds = [];
+  
   }
 
 }

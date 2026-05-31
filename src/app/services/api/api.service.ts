@@ -55,6 +55,13 @@ export class ApiService {
     return this.http.post(this.dbUrl + "Distributors.json", payload);
   }
 
+  updateDistributor(distributorKey: string, data: any) {
+    return this.http.patch(
+      this.dbUrl + 'Distributors/' + distributorKey + '.json',
+      data
+    );
+  }
+
   public deleteNotification(key:any) :Observable<any> {
     return this.http.delete(this.dbUrl+"DistributorNotifications/"+key+".json");
   }
