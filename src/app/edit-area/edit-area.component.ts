@@ -38,7 +38,9 @@ export class EditAreaComponent {
       areaName: [{ value: this.areaData["areaName"], disabled: true }],
       freightPercentage: [this.areaData["freightPercentage"], Validators.required],
       amcPrice: [this.areaData["amcPrice"], Validators.required],
-      amcServices: [this.areaData["amcServices"], Validators.required]
+      amcServices: [this.areaData["amcServices"], Validators.required],
+      salesPerson: [this.areaData["salesPerson"], Validators.required],
+      salesContact: [this.areaData["salesContact"], Validators.required],
     });
   }
 
