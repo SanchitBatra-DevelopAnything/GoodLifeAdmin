@@ -99,6 +99,12 @@ export class SparePartOrderDetailComponent
     });
   }
 
+  deleteOrder() : void {
+    this.apiService.deleteActiveSparePartOrder(this.order.orderedBy , this.order.firebaseOrderId).subscribe((_)=>{
+      this.router.navigate(['/dailyReport']);
+    });
+  }
+
   moveToPending(): void {
 
     this.apiService.updateOrder(

@@ -216,9 +216,6 @@
   <div class="actions">
 
     <div
-  *ngIf="
-    order.status === 'PENDING'
-  "
   class="upload-section"
 >
 
@@ -248,20 +245,20 @@
       *ngIf="
         order.status === 'PENDING'
       "
-      class="secondary-btn"
-      (click)="openAddBalancePopup()"
+      class="primary-btn"
+      (click)="verifyPayment()"
     >
-      Add Balance
+      Verify Payment
     </button>
 
     <button
       *ngIf="
         order.status === 'PENDING'
       "
-      class="primary-btn"
-      (click)="verifyPayment()"
+      class="primary-btn" style="background-color: red;"
+      (click)="deleteOrder()"
     >
-      Verify Payment
+      Delete Order.
     </button>
 
     <button
@@ -272,7 +269,7 @@
       class="danger-btn"
       (click)="moveToPending()"
     >
-      Move To Pending
+      Reject the payment.
     </button>
 
     <button
@@ -299,7 +296,7 @@
 
   </div>
 
-  <div
+  <!-- <div
     class="popup-backdrop"
     *ngIf="showAddBalancePopup"
   >
@@ -331,6 +328,6 @@
 
     </div>
 
-  </div>
+  </div> -->
 
 </div>
