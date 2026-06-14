@@ -1,0 +1,311 @@
+<div
+  class="loader-overlay"
+  *ngIf="isLoading"
+>
+
+  <div class="loader-card">
+
+    <div class="spinner"></div>
+
+    <div class="loader-text">
+      {{ loadingMessage }}
+    </div>
+
+  </div>
+
+</div>
+
+<div
+  class="page"
+  *ngIf="order"
+>
+
+  <div class="hero-card">
+
+    <div class="top-section">
+
+      <div>
+
+        <h1>
+          {{ order.orderedBy }}
+        </h1>
+
+        <div class="status-chip">
+          {{ order.orderStatus }}
+        </div>
+
+      </div>
+
+      <button
+        class="back-btn"
+        routerLink="/dailyReport"
+      >
+        Back
+      </button>
+
+    </div>
+
+    <div class="hero-grid">
+
+      <div class="info-box">
+        <label>Area</label>
+        <p>{{ order.area }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Contact</label>
+        <p>{{ order.contact }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Device Token</label>
+        <p>{{ order.deviceToken }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Date</label>
+        <p>{{ order.orderDate }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Time</label>
+        <p>{{ order.orderTime }}</p>
+      </div>
+
+      <div class="info-box">
+        <label>Dispatched On</label>
+        <p>
+          {{
+            order.dispatchedOn
+              || '-'
+          }}
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="documents-card">
+
+    <h2>
+      Requested Items
+    </h2>
+
+    <div
+      class="photo-grid"
+    >
+
+      <img
+        *ngFor="
+          let item of order.requestedItems
+        "
+        [src]="item"
+        class="preview-image"
+      />
+
+    </div>
+
+  </div>
+
+  <div class="documents-card">
+
+    <h2>
+      Requested Message
+    </h2>
+
+    <p>
+      {{
+        order.requestedMessage
+      }}
+    </p>
+
+  </div>
+
+  <div class="documents-card">
+
+    <h2>
+      Documents
+    </h2>
+
+    <div
+      *ngIf="order.piLink"
+      class="document-item"
+    >
+      <a
+        [href]="order.piLink"
+        target="_blank"
+      >
+        View PI
+      </a>
+    </div>
+
+    <div
+      *ngIf="order.paymentLink"
+      class="document-item"
+    >
+
+      <img
+        [src]="order.paymentLink"
+        class="preview-image"
+      />
+
+    </div>
+
+    <div
+      *ngIf="order.poLink"
+      class="document-item"
+    >
+      <a
+        [href]="order.poLink"
+        target="_blank"
+      >
+        View PO
+      </a>
+    </div>
+
+  </div>
+
+  <div class="documents-card">
+
+    <h2>
+      Additional Documents
+    </h2>
+
+    <div
+      *ngFor="
+        let doc of order.additionalDocuments
+      "
+      class="document-item"
+    >
+
+      <img
+        *ngIf="
+          isImage(doc)
+        "
+        [src]="doc"
+        class="preview-image"
+      />
+
+      <a
+        [href]="doc"
+        target="_blank"
+      >
+        Open Document
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="actions">
+
+    <div
+      *ngIf="
+        order.orderStatus ===
+        'INQUIRY'
+      "
+      class="upload-section"
+    >
+
+      <input
+        type="file"
+        accept=".pdf"
+        (change)="onPISelected($event)"
+      />
+
+      <button
+        class="primary-btn"
+        [disabled]="
+          !selectedPIFile
+        "
+        (click)="uploadPI()"
+      >
+        Upload PI
+      </button>
+
+    </div>
+
+    <div
+      class="upload-section"
+    >
+
+      <input
+        type="file"
+        (change)="onAdditionalSelected($event)"
+      />
+
+      <button
+        class="primary-btn"
+        [disabled]="
+          !selectedAdditionalFile
+        "
+        (click)="uploadAdditionalDocument()"
+      >
+        Upload Additional
+      </button>
+
+    </div>
+
+    <button
+      *ngIf="
+        order.orderStatus ===
+          'INQUIRY' ||
+        order.orderStatus ===
+          'WAITING_ON_CUSTOMER' ||
+        order.orderStatus ===
+          'PAYMENT_REJECTED'
+      "
+      class="danger-btn"
+      (click)="deleteOrder()"
+    >
+      Delete Order
+    </button>
+
+    <button
+      *ngIf="
+        order.orderStatus ===
+        'PAYMENT_VERIFICATION'
+      "
+      class="danger-btn"
+      (click)="rejectPayment()"
+    >
+      Reject Payment
+    </button>
+
+    <button
+      *ngIf="
+        order.orderStatus ===
+        'PAYMENT_VERIFICATION'
+      "
+      class="success-btn"
+      (click)="verifyPayment()"
+    >
+      Verify Payment
+    </button>
+
+    <button
+      *ngIf="
+        order.orderStatus ===
+        'PAYMENT_REJECTED'
+      "
+      class="success-btn"
+      (click)="verifyPayment()"
+    >
+      Move To Verified
+    </button>
+
+    <button
+      *ngIf="
+        order.orderStatus ===
+        'PAYMENT_VERIFIED'
+      "
+      class="success-btn"
+      (click)="dispatchOrder()"
+    >
+      Dispatch Order
+    </button>
+
+  </div>
+
+</div>
