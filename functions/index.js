@@ -217,7 +217,12 @@ exports.getPartyInquiryOrders = https.onRequest(
 
         const activeOrdersData = activeOrdersSnapshot.val() || {};
 
-        const activeOrders = Object.values(activeOrdersData);
+        const activeOrders = Object.entries(activeOrdersData).map(
+          ([firebaseOrderId, order]) => ({
+            ...order,
+            firebaseOrderId,
+          })
+        );
 
         activeOrders.sort((a, b) => {
           const dateA = new Date(
@@ -243,9 +248,12 @@ exports.getPartyInquiryOrders = https.onRequest(
         const completedOrdersData =
           completedOrdersSnapshot.val() || {};
 
-        const completedOrders = Object.values(
+        const completedOrders = Object.entries(
           completedOrdersData
-        );
+        ).map(([dispatchedOrderId, order]) => ({
+          ...order,
+          dispatchedOrderId,
+        }));
 
         completedOrders.sort(
           (a, b) => (b.createdAt || 0) - (a.createdAt || 0)
