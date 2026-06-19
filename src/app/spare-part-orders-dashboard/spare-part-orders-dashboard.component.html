@@ -1,54 +1,78 @@
 <div class="orders-dashboard">
 
-  <div class="section">
+  <div class="order-type-tabs">
 
-    <h2 class="section-title pending">
-      Payment Rejected Orders
-      ({{ pendingOrders.length }})
-    </h2>
+    <button
+      [class.active]="selectedOrderType === 'EXECUTIVE'"
+      (click)="selectedOrderType='EXECUTIVE'">
+      Executive Delivery
+    </button>
 
-    <div class="orders-grid">
+    <button
+      [class.active]="selectedOrderType === 'CUSTOM'"
+      (click)="selectedOrderType='CUSTOM'">
+      Custom Orders
+    </button>
 
-      <div
-        class="sticky-note pending-note"
-        *ngFor="let order of pendingOrders"
-        (click)="openOrder(order)"
-      >
+  </div>
 
-        <div class="top-bar">
+  <!-- ===================================================== -->
+  <!-- EXECUTIVE DELIVERY ORDERS -->
+  <!-- ===================================================== -->
 
-          <div class="username">
-            {{ order.orderedBy }}
+  <ng-container *ngIf="selectedOrderType === 'EXECUTIVE'">
+
+    <!-- Payment Rejected -->
+
+    <div class="section">
+
+      <h2 class="section-title pending">
+        Payment Rejected Orders
+        ({{ pendingOrders.length }})
+      </h2>
+
+      <div class="orders-grid">
+
+        <div
+          class="sticky-note pending-note"
+          *ngFor="let order of pendingOrders"
+          (click)="openOrder(order)"
+        >
+
+          <div class="top-bar">
+
+            <div class="username">
+              {{ order.orderedBy }}
+            </div>
+
+            <div class="status-badge pending-badge">
+              Pending
+            </div>
+
           </div>
 
-          <div class="status-badge pending-badge">
-            Pending
-          </div>
+          <div class="details">
 
-        </div>
+            <div class="detail-row">
+              <span>Date</span>
+              <strong>{{ order.orderDate }}</strong>
+            </div>
 
-        <div class="details">
+            <div class="detail-row">
+              <span>Time</span>
+              <strong>{{ order.orderTime }}</strong>
+            </div>
 
-          <div class="detail-row">
-            <span>Date</span>
-            <strong>{{ order.orderDate }}</strong>
-          </div>
+            <div class="detail-row">
+              <span>Area</span>
+              <strong>{{ order.area }}</strong>
+            </div>
 
-          <div class="detail-row">
-            <span>Time</span>
-            <strong>{{ order.orderTime }}</strong>
-          </div>
+            <div class="detail-row">
+              <span>Total</span>
+              <strong>₹{{ order.totalPrice }}</strong>
+            </div>
 
-          <div class="detail-row">
-            <span>Area</span>
-            <strong>{{ order.area }}</strong>
-          </div>
-
-          <div class="detail-row">
-            <span>Total</span>
-            <strong>
-              ₹{{ order.totalPrice }}
-            </strong>
           </div>
 
         </div>
@@ -57,120 +81,57 @@
 
     </div>
 
-  </div>
+    <!-- Payment Verification -->
 
-  <div class="section">
+    <div class="section">
 
-    <h2 class="section-title verification">
-      Payment Verification
-      ({{ paymentVerificationOrders.length }})
-    </h2>
+      <h2 class="section-title verification">
+        Payment Verification
+        ({{ paymentVerificationOrders.length }})
+      </h2>
 
-    <div class="orders-grid">
+      <div class="orders-grid">
 
-      <div
-        class="sticky-note verification-note"
-        *ngFor="
-          let order of paymentVerificationOrders
-        "
-        (click)="openOrder(order)"
-      >
+        <div
+          class="sticky-note verification-note"
+          *ngFor="let order of paymentVerificationOrders"
+          (click)="openOrder(order)"
+        >
 
-        <div class="top-bar">
+          <div class="top-bar">
 
-          <div class="username">
-            {{ order.orderedBy }}
+            <div class="username">
+              {{ order.orderedBy }}
+            </div>
+
+            <div class="status-badge verification-badge">
+              Verification
+            </div>
+
           </div>
 
-          <div class="status-badge verification-badge">
-            Verification
-          </div>
+          <div class="details">
 
-        </div>
+            <div class="detail-row">
+              <span>Date</span>
+              <strong>{{ order.orderDate }}</strong>
+            </div>
 
-        <div class="details">
+            <div class="detail-row">
+              <span>Time</span>
+              <strong>{{ order.orderTime }}</strong>
+            </div>
 
-          <div class="detail-row">
-            <span>Date</span>
-            <strong>{{ order.orderDate }}</strong>
-          </div>
+            <div class="detail-row">
+              <span>Area</span>
+              <strong>{{ order.area }}</strong>
+            </div>
 
-          <div class="detail-row">
-            <span>Time</span>
-            <strong>{{ order.orderTime }}</strong>
-          </div>
+            <div class="detail-row">
+              <span>Total</span>
+              <strong>₹{{ order.totalPrice }}</strong>
+            </div>
 
-          <div class="detail-row">
-            <span>Area</span>
-            <strong>{{ order.area }}</strong>
-          </div>
-
-          <div class="detail-row">
-            <span>Total</span>
-            <strong>
-              ₹{{ order.totalPrice }}
-            </strong>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="section">
-
-    <h2 class="section-title verified">
-      Payment Verified
-      ({{ paymentVerifiedOrders.length }})
-    </h2>
-
-    <div class="orders-grid">
-
-      <div
-        class="sticky-note verified-note"
-        *ngFor="
-          let order of paymentVerifiedOrders
-        "
-        (click)="openOrder(order)"
-      >
-
-        <div class="top-bar">
-
-          <div class="username">
-            {{ order.orderedBy }}
-          </div>
-
-          <div class="status-badge verified-badge">
-            Verified
-          </div>
-
-        </div>
-
-        <div class="details">
-
-          <div class="detail-row">
-            <span>Date</span>
-            <strong>{{ order.orderDate }}</strong>
-          </div>
-
-          <div class="detail-row">
-            <span>Time</span>
-            <strong>{{ order.orderTime }}</strong>
-          </div>
-
-          <div class="detail-row">
-            <span>Area</span>
-            <strong>{{ order.area }}</strong>
-          </div>
-
-          <div class="detail-row">
-            <span>Total</span>
-            <strong>
-              ₹{{ order.totalPrice }}
-            </strong>
           </div>
 
         </div>
@@ -179,6 +140,343 @@
 
     </div>
 
-  </div>
+    <!-- Payment Verified -->
+
+    <div class="section">
+
+      <h2 class="section-title verified">
+        Payment Verified
+        ({{ paymentVerifiedOrders.length }})
+      </h2>
+
+      <div class="orders-grid">
+
+        <div
+          class="sticky-note verified-note"
+          *ngFor="let order of paymentVerifiedOrders"
+          (click)="openOrder(order)"
+        >
+
+          <div class="top-bar">
+
+            <div class="username">
+              {{ order.orderedBy }}
+            </div>
+
+            <div class="status-badge verified-badge">
+              Verified
+            </div>
+
+          </div>
+
+          <div class="details">
+
+            <div class="detail-row">
+              <span>Date</span>
+              <strong>{{ order.orderDate }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Time</span>
+              <strong>{{ order.orderTime }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Area</span>
+              <strong>{{ order.area }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Total</span>
+              <strong>₹{{ order.totalPrice }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-container>
+
+  <!-- ===================================================== -->
+  <!-- CUSTOM ORDERS -->
+  <!-- ===================================================== -->
+
+  <ng-container *ngIf="selectedOrderType === 'CUSTOM'">
+
+    <!-- Inquiry -->
+
+    <div class="section">
+
+      <h2 class="section-title inquiry">
+        Inquiry / Pending
+        ({{ customInquiryOrders.length }})
+      </h2>
+
+      <div class="orders-grid">
+
+        <div
+          class="sticky-note inquiry-note"
+          *ngFor="let order of customInquiryOrders"
+          (click)="openCustomOrder(order)"
+        >
+
+          <div class="top-bar">
+
+            <div class="username">
+              {{ order.orderedBy }}
+            </div>
+
+            <div class="status-badge inquiry-badge">
+              Inquiry
+            </div>
+
+          </div>
+
+          <div class="details">
+
+            <div class="detail-row">
+              <span>Date</span>
+              <strong>{{ order.orderDate }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Time</span>
+              <strong>{{ order.orderTime }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Area</span>
+              <strong>{{ order.area }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Waiting On Customer -->
+
+    <div class="section">
+
+      <h2 class="section-title waiting">
+        Waiting On Customer
+        ({{ customWaitingOnCustomerOrders.length }})
+      </h2>
+
+      <div class="orders-grid">
+
+        <div
+          class="sticky-note waiting-note"
+          *ngFor="let order of customWaitingOnCustomerOrders"
+          (click)="openCustomOrder(order)"
+        >
+
+          <div class="top-bar">
+
+            <div class="username">
+              {{ order.orderedBy }}
+            </div>
+
+            <div class="status-badge waiting-badge">
+              Waiting
+            </div>
+
+          </div>
+
+          <div class="details">
+
+            <div class="detail-row">
+              <span>Date</span>
+              <strong>{{ order.orderDate }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Time</span>
+              <strong>{{ order.orderTime }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Area</span>
+              <strong>{{ order.area }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Payment Verification -->
+
+    <div class="section">
+
+      <h2 class="section-title verification">
+        Payment Verification
+        ({{ customPaymentVerificationOrders.length }})
+      </h2>
+
+      <div class="orders-grid">
+
+        <div
+          class="sticky-note verification-note"
+          *ngFor="let order of customPaymentVerificationOrders"
+          (click)="openCustomOrder(order)"
+        >
+
+          <div class="top-bar">
+
+            <div class="username">
+              {{ order.orderedBy }}
+            </div>
+
+            <div class="status-badge verification-badge">
+              Verification
+            </div>
+
+          </div>
+
+          <div class="details">
+
+            <div class="detail-row">
+              <span>Date</span>
+              <strong>{{ order.orderDate }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Time</span>
+              <strong>{{ order.orderTime }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Area</span>
+              <strong>{{ order.area }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Payment / PO Rejected -->
+
+    <div class="section">
+
+      <h2 class="section-title pending">
+        Payment / PO Rejected
+        ({{ customPaymentRejectedOrders.length }})
+      </h2>
+
+      <div class="orders-grid">
+
+        <div
+          class="sticky-note pending-note"
+          *ngFor="let order of customPaymentRejectedOrders"
+          (click)="openCustomOrder(order)"
+        >
+
+          <div class="top-bar">
+
+            <div class="username">
+              {{ order.orderedBy }}
+            </div>
+
+            <div class="status-badge pending-badge">
+              Rejected
+            </div>
+
+          </div>
+
+          <div class="details">
+
+            <div class="detail-row">
+              <span>Date</span>
+              <strong>{{ order.orderDate }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Time</span>
+              <strong>{{ order.orderTime }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Area</span>
+              <strong>{{ order.area }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Payment / PO Verified -->
+
+    <div class="section">
+
+      <h2 class="section-title verified">
+        Payment / PO Verified
+        ({{ customPaymentVerifiedOrders.length }})
+      </h2>
+
+      <div class="orders-grid">
+
+        <div
+          class="sticky-note verified-note"
+          *ngFor="let order of customPaymentVerifiedOrders"
+          (click)="openCustomOrder(order)"
+        >
+
+          <div class="top-bar">
+
+            <div class="username">
+              {{ order.orderedBy }}
+            </div>
+
+            <div class="status-badge verified-badge">
+              Verified
+            </div>
+
+          </div>
+
+          <div class="details">
+
+            <div class="detail-row">
+              <span>Date</span>
+              <strong>{{ order.orderDate }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Time</span>
+              <strong>{{ order.orderTime }}</strong>
+            </div>
+
+            <div class="detail-row">
+              <span>Area</span>
+              <strong>{{ order.area }}</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-container>
 
 </div>

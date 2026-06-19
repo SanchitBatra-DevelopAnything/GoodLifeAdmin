@@ -185,3 +185,101 @@ exports.getPartyExecutiveDeliveryOrders = https.onRequest(
     });
   }
 );
+
+
+exports.getPartyInquiryOrders = https.onRequest(
+  { region: "asia-southeast1" },
+  (req, res) => {
+    cors(req, res, async () => {
+      try {
+        if (req.method !== "POST") {
+          return res.status(405).json({
+            error: "Method Not Allowed",
+          });
+        }
+
+        const { partyName } = req.body;
+
+        if (!partyName) {
+          return res.status(400).json({
+            error: "partyName is required",
+          });
+        }
+
+        const db = admin.database();
+
+        // -------------------------
+        // Active Orders
+        // -------------------------
+        const activeOrdersSnapshot = await db
+          .ref(`/inquiryOrders/${partyName}`)
+          .once("value");
+
+        const activeOrdersData = activeOrdersSnapshot.val() || {};
+
+        const activeOrders = Object.entries(activeOrdersData).map(
+          ([firebaseOrderId, order]) => ({
+            ...order,
+            firebaseOrderId,
+          })
+        );
+
+        activeOrders.sort((a, b) => {
+          const dateA = new Date(
+            `${a.orderDate || ""}T${a.orderTime || "00:00:00"}`
+          );
+
+          const dateB = new Date(
+            `${b.orderDate || ""}T${b.orderTime || "00:00:00"}`
+          );
+
+          return dateB - dateA;
+        });
+
+        // -------------------------
+        // Last 5 Completed Orders
+        // -------------------------
+        const completedOrdersSnapshot = await db
+          .ref(`/completedInquiryOrders/${partyName}`)
+          .orderByChild("createdAt")
+          .limitToLast(5)
+          .once("value");
+
+        const completedOrdersData =
+          completedOrdersSnapshot.val() || {};
+
+        const completedOrders = Object.entries(
+          completedOrdersData
+        ).map(([dispatchedOrderId, order]) => ({
+          ...order,
+          dispatchedOrderId,
+        }));
+
+        completedOrders.sort(
+          (a, b) => (b.createdAt || 0) - (a.createdAt || 0)
+        );
+
+        // -------------------------
+        // Active First, Completed Later
+        // -------------------------
+        const orders = [
+          ...activeOrders,
+          ...completedOrders,
+        ];
+
+        return res.status(200).json({
+          orders,
+        });
+      } catch (error) {
+        console.error(
+          "💥 Error fetching party orders:",
+          error
+        );
+
+        return res.status(500).json({
+          error: "Internal server error",
+        });
+      }
+    });
+  }
+);

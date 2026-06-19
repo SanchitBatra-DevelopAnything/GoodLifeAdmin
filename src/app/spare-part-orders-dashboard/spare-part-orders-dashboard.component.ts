@@ -14,6 +14,16 @@ export interface Order {
   partyClaimedPaymentComplete: boolean;
 }
 
+export interface CustomOrder {
+  firebaseOrderId: string;
+  orderedBy: string;
+  orderDate: string;
+  orderTime: string;
+  area: string;
+  orderStatus: string;
+  message?: string;
+}
+
 @Component({
   selector: 'app-orders-dashboard',
   templateUrl: './spare-part-orders-dashboard.component.html',
@@ -21,13 +31,21 @@ export interface Order {
 })
 export class SparePartsOrdersDashboardComponent implements OnInit {
 
-  pendingOrders: Order[] = [];
-
-  paymentVerificationOrders: Order[] = [];
-
-  paymentVerifiedOrders: Order[] = [];
+  selectedOrderType: 'EXECUTIVE' | 'CUSTOM' = 'EXECUTIVE';
 
   loading = false;
+
+  // Executive Orders
+  pendingOrders: Order[] = [];
+  paymentVerificationOrders: Order[] = [];
+  paymentVerifiedOrders: Order[] = [];
+
+  // Custom Orders
+  customInquiryOrders: CustomOrder[] = [];
+  customWaitingOnCustomerOrders: CustomOrder[] = [];
+  customPaymentVerificationOrders: CustomOrder[] = [];
+  customPaymentRejectedOrders: CustomOrder[] = [];
+  customPaymentVerifiedOrders: CustomOrder[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -36,12 +54,20 @@ export class SparePartsOrdersDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllOrders();
+    this.getAllCustomOrders();
   }
 
-  openOrder(order: any): void {
-
+  openOrder(order: Order): void {
     this.router.navigate([
       '/orderDetail/sparePart',
+      order.orderedBy,
+      order.firebaseOrderId
+    ]);
+  }
+
+  openCustomOrder(order: CustomOrder): void {
+    this.router.navigate([
+      '/orderDetail/customOrder',
       order.orderedBy,
       order.firebaseOrderId
     ]);
@@ -83,9 +109,44 @@ export class SparePartsOrdersDashboardComponent implements OnInit {
 
         this.loading = false;
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error(err);
         this.loading = false;
+      }
+    });
+  }
+
+  getAllCustomOrders(): void {
+
+    this.apiService.getAllSparePartCustomOrders().subscribe({
+      next: (response: any) => {
+
+        const allOrders: CustomOrder[] = [];
+
+        Object.keys(response || {}).forEach((username) => {
+
+          const userOrders = response[username];
+
+          Object.keys(userOrders || {}).forEach((key) => {
+
+            const order = userOrders[key];
+
+            allOrders.push({
+              firebaseOrderId: key,
+              orderedBy: order.orderedBy,
+              orderDate: order.orderDate,
+              orderTime: order.orderTime,
+              area: order.area,
+              orderStatus: order.orderStatus,
+              message: order.message
+            });
+          });
+        });
+
+        this.segregateCustomOrders(allOrders);
+      },
+      error: (err: any) => {
+        console.error(err);
       }
     });
   }
@@ -93,9 +154,7 @@ export class SparePartsOrdersDashboardComponent implements OnInit {
   segregateOrders(orders: Order[]): void {
 
     this.pendingOrders = [];
-
     this.paymentVerificationOrders = [];
-
     this.paymentVerifiedOrders = [];
 
     orders.forEach(order => {
@@ -112,6 +171,43 @@ export class SparePartsOrdersDashboardComponent implements OnInit {
 
         case 'PAYMENT_VERIFIED':
           this.paymentVerifiedOrders.push(order);
+          break;
+      }
+    });
+  }
+
+  segregateCustomOrders(
+    orders: CustomOrder[]
+  ): void {
+
+    this.customInquiryOrders = [];
+    this.customWaitingOnCustomerOrders = [];
+    this.customPaymentVerificationOrders = [];
+    this.customPaymentRejectedOrders = [];
+    this.customPaymentVerifiedOrders = [];
+
+    orders.forEach(order => {
+
+      switch (order.orderStatus) {
+
+        case 'INQUIRY':
+          this.customInquiryOrders.push(order);
+          break;
+
+        case 'WAITING_ON_CUSTOMER':
+          this.customWaitingOnCustomerOrders.push(order);
+          break;
+
+        case 'PAYMENT_VERIFICATION':
+          this.customPaymentVerificationOrders.push(order);
+          break;
+
+        case 'PAYMENT_REJECTED':
+          this.customPaymentRejectedOrders.push(order);
+          break;
+
+        case 'PAYMENT_VERIFIED':
+          this.customPaymentVerifiedOrders.push(order);
           break;
       }
     });

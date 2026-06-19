@@ -303,6 +303,8 @@ export class ApiService {
     return this.http.get(this.dbUrl+"activeOrders.json");
   }
 
+  
+
   public getSparePartOrder(
     orderedBy: string,
     firebaseOrderId: string
@@ -363,6 +365,74 @@ export class ApiService {
       "/" +
       firebaseOrderId +
       ".json"
+    );
+  }
+
+  public getAllSparePartCustomOrders() : Observable<any>
+  {
+    return this.http.get(this.dbUrl+"inquiryOrders.json");
+  }
+
+  public getInquiryOrder(
+    orderedBy: string,
+    firebaseOrderId: string
+  ): Observable<any> {
+    return this.http.get(
+      this.dbUrl +
+        'inquiryOrders/' +
+        orderedBy +
+        '/' +
+        firebaseOrderId +
+        '.json'
+    );
+  }
+  
+  public updateInquiryOrder(
+    orderedBy: string,
+    firebaseOrderId: string,
+    data: any
+  ): Observable<any> {
+    return this.http.patch(
+      this.dbUrl +
+        'inquiryOrders/' +
+        orderedBy +
+        '/' +
+        firebaseOrderId +
+        '.json',
+      data
+    );
+  }
+  
+  public deleteInquiryOrder(
+    orderedBy: string,
+    firebaseOrderId: string
+  ): Observable<any> {
+    return this.http.delete(
+      this.dbUrl +
+        'inquiryOrders/' +
+        orderedBy +
+        '/' +
+        firebaseOrderId +
+        '.json'
+    );
+  }
+  
+  public moveInquiryOrderToCompleted(
+    order: any
+  ): Observable<any> {
+  
+    const updatedOrder = {
+      ...order,
+      createdAt: Date.now(),
+      dispatchedOn: new Date().toISOString().split('T')[0]
+    };
+  
+    return this.http.post(
+      this.dbUrl +
+        'completedInquiryOrders/' +
+        order.orderedBy +
+        '.json',
+      updatedOrder
     );
   }
 

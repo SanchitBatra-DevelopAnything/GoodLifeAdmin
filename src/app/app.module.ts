@@ -54,6 +54,7 @@ import { AddCategoryFormComponent } from './add-category-form/add-category-form.
 import { EditAreaComponent } from './edit-area/edit-area.component';
 import { SparePartsOrdersDashboardComponent } from './spare-part-orders-dashboard/spare-part-orders-dashboard.component';
 import { SparePartOrderDetailComponent } from './spare-part-order-detail/spare-part-order-detail.component';
+import { CustomOrderDetailComponent } from './custom-order-detail/custom-order-detail.component';
 
 
 const appRoutes : Routes = [
@@ -72,6 +73,10 @@ const appRoutes : Routes = [
   {
     path: 'orderDetail/sparePart/:orderedBy/:id',
     component: SparePartOrderDetailComponent
+  },
+  {
+    path: 'orderDetail/customOrder/:orderedBy/:id',
+    component: CustomOrderDetailComponent
   },
   {path : 'signup' , component : SignupFormComponent},
   {path : 'dailyReport' , component : SparePartsOrdersDashboardComponent},
@@ -106,6 +111,7 @@ const appRoutes : Routes = [
     EditAreaComponent,
     SparePartsOrdersDashboardComponent,
     SparePartOrderDetailComponent,
+    CustomOrderDetailComponent,
   ],
   imports: [
     BrowserModule,
